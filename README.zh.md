@@ -2,35 +2,38 @@
 
 [English](README.md)
 
-一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web 插件：用 emoji 替换工具图标，**动态支持所有工具**。
+一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web 插件：用 emoji 替换工具图标，**支持 90+ DSH 工具的可视化选择器**。
 
 ## ✨ 特性
 
-- **通用工具支持** — 适配任意 DSH 工具，不限于硬编码列表
-- **30+ 默认 emoji 映射**，覆盖常用工具
-- **在设置界面添加自定义工具**，无需改代码
+- **可视化工具选择器** — 浏览并添加 90+ 预配置 DSH 工具
+- **搜索与过滤** — 按名称或分类查找工具
+- **一键自定义** — 点击"添加"，然后自定义 emoji 或上传图片
 - **单独启用/禁用** — 可混用 emoji 与默认图标
 - **自定义 emoji 或图片** — 上传 PNG/JPEG/GIF/WebP/BMP（最大 1MB，存在 localStorage）
-- **分类设置** — 工具按功能分组（文件操作、Shell、网络搜索等）
+- **分类界面** — 工具按功能分组（文件操作、Shell、网络搜索等）
 - **开箱即用** — 常用工具默认配置好
 
-## 默认映射（30+ 工具）
+## 默认映射（90+ 工具）
 
-| 分类 | 工具 | Emoji |
+插件包含 90+ 工具的 emoji 映射，分为以下类别：
+
+| 分类 | 示例 | Emoji 示例 |
 |---|---|---|
 | **推理** | `think` | 🤔 |
-| **文件操作** | `read`, `grep`, `glob` | 🧐, 🔍, 📁 |
-| | `read_image` | 🖼️ |
-| | `edit`, `write`, `str_replace_editor` | ✏️, ✍️, 📝 |
+| **文件操作** | `read`, `write`, `edit`, `grep`, `glob`, `read_image` | 🧐, ✍️, ✏️, 🔍, 📁, 🖼️ |
 | **Shell** | `bash`, `pwsh` | 💻, 👨‍💻 |
-| **网络搜索** | `web_fetch`, `web_search`, `platform_search` | 🧐, 🔍, 🔎 |
-| | `video_search`, `domain_search`, `weather` | 🎬, 🏢, 🌤️ |
-| **委托** | `subagent`, `subagent_fork`, `workflow` | 🤖, 🔀, ⚙️ |
+| **网络搜索** | `web_fetch`, `web_search`, `research`, `weather` | 🌐, 🔍, 📚, 🌤️ |
+| **委托** | `subagent`, `workflow`, `spawn_teammate` | 🤖, ⚙️, 👥 |
 | **任务控制** | `job_list`, `job_output`, `job_kill` | 📋, 📤, ❌ |
-| **输出** | `present` | 🎁 |
-| **系统** | `skill`, `working_directory` | 📚, 📂 |
-| **用户交互** | `ask_user_question` | ❓ |
+| **记忆** | `mnemon_recall`, `mnemon_remember`, `mnemon_document_search` | 🧠, 💭, 📄 |
+| **目标与任务** | `create_goal`, `task_board_create`, `todo_write` | 🎯, 📋, 📝 |
+| **调度** | `schedule_create`, `schedule_list` | ⏰, 📅 |
+| **Office** | `office_docx`, `office_xlsx`, `office_pptx` | 📄, 📊, 📊 |
+| **其他** | `plugin_manager`, `list_subagent_models` | 🔌, 🏷️ |
 | **错误状态** | 任意工具出错时 | 😫 |
+
+完整列表见设置界面。
 
 ## 效果图
 
@@ -77,20 +80,22 @@ dsh plugin --profile web remove dsh-tool-emoji
 
 ### 总控制
 - **总开关** 可一键启用/禁用整个插件
-- **统计信息** — 显示已配置和已启用的工具数量
+- **统计信息** — 显示已配置、已启用和可用的工具数量
 
-### 单工具配置
-- 每个工具都有独立卡片，包含：
+### 已配置工具
+- 每个已添加的工具都有独立卡片，包含：
   - **启用/禁用开关** — 可混用 emoji 与默认图标
   - **自定义 emoji 输入框** — 填写任意 emoji 或文字
-  - **图片上传** — 使用本地图片作为图标（PNG/JPEG/GIF/WebP/BMP，最大 1MB，存在 localStorage）
+  - **图片上传** — 使用本地图片作为图标（PNG/JPEG/GIF/WebP/BMP，最大 1MB）
   - **移除图片** 按钮，回退到 emoji
-  - **删除工具** 按钮，移除自定义条目
+  - **删除** 按钮，从配置中移除
 
-### 添加新工具
-- **"添加新工具"区域** — 输入任意工具名创建自定义映射
-- 工具名必须匹配 DOM 中的 `data-tool` 或 `data-variant` 属性
-- 未知工具会自动获得默认 emoji（🔧）
+### 添加工具
+- **可视化工具选择器** — 浏览 90+ 预配置 DSH 工具
+- **搜索/过滤** — 按名称或分类查找工具
+- **网格布局** — 每个工具显示 emoji、名称和"添加"按钮
+- **一键添加** — 添加后工具自动隐藏（避免重复）
+- **展开/折叠** — "显示全部"展开完整列表
 
 ### 错误状态
 - 配置**所有工具出错时**显示的 emoji
@@ -113,14 +118,13 @@ dsh plugin --profile web remove dsh-tool-emoji
 
 如果 `dsh-edit-guardian` 没有向 `.dshg_row` 暴露 `data-tool`，这些自定义行的 emoji 不会生效。
 
-## 手动添加工具
+## 添加自定义工具
 
-虽然设置界面可以按名称添加任意工具，但如果需要更精细的控制，也可以直接编辑 `lib/client.js` 中的 CSS 选择器。
+可视化选择器包含 90+ 已知 DSH 工具。如果需要列表中没有的工具：
 
-插件使用这些选择器：
-- `[data-tool="<name>"]` 用于大多数工具
-- `[data-variant="<name>"]` 用于某些工具（如 `think`、`read`、`search`）
-- `.dshg_row[data-tool="<name>"]` 用于 dsh-edit-guardian 兼容
+1. 只要该工具使用标准 `data-tool` 或 `data-variant` 属性，插件仍可工作
+2. 未知工具会获得默认 emoji（🔧）
+3. 可以手动编辑 `lib/client.js` 中的 `ALL_KNOWN_TOOLS` 添加更多工具
 
 ## 注意
 
@@ -134,19 +138,19 @@ dsh plugin --profile web remove dsh-tool-emoji
 
 本版本（v2）使用新的存储键（`dsh-tool-emoji:config:v2`）和结构：
 
-- **旧安装**：v1 设置不会自动迁移。使用"添加新工具"重建自定义条目。
-- **默认行为**：`DEFAULT_EMOJI_MAP` 中的所有工具现在默认启用。可按需禁用单个工具。
-- **自定义工具**：现在可以在界面添加任意工具，无需改代码。
+- **旧安装**：v1 设置不会自动迁移。使用可视化工具选择器重新添加工具。
+- **默认行为**：工具必须通过选择器显式添加（不再自动启用）。
+- **90+ 工具可用**：预配置工具列表大幅扩展。
 
 ## 与上游的差异
 
 本 fork 包含以下改动：
 
-1. **通用工具支持** — 适配任意工具，不限于预定义列表
-2. **30+ 默认 emoji 映射**，覆盖常用 DSH 工具
-3. **在设置界面添加/删除工具** — 无需改代码
-4. **分类设置** — 工具按功能分组
-5. **更好的用户体验** — 统计信息、更好的布局、更清晰的标签
+1. **可视化工具选择器** — 浏览并添加 90+ 预配置工具
+2. **搜索与过滤** — 在选择器界面按名称或分类查找工具
+3. **分类显示** — 工具按功能分组
+4. **更好的用户体验** — 统计信息、网格布局、展开/折叠
+5. **90+ 默认 emoji 映射**，覆盖大多数 DSH 工具
 6. **放宽 `peerDependencies`** 以支持 DSH `^0.2.0`：
    - `@deepseek-ai/cordis`: `^4.0.1 || ^5.0.0`
    - `@deepseek-ai/dsh-client-runtime`: `^0.1.1-rc.2 || ^0.2.0`

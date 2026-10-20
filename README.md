@@ -2,35 +2,38 @@
 
 [中文](README.zh.md)
 
-A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web plugin that replaces tool icons with emoji, **supporting all tools dynamically**.
+A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web plugin that replaces tool icons with emoji, **supporting 90+ DSH tools with visual picker**.
 
 ## ✨ Features
 
-- **Universal tool support** — Works with any DSH tool, not just a hardcoded list
-- **30+ default emoji mappings** for common tools
-- **Add custom tools** in the settings UI without editing code
+- **Visual tool picker** — Browse and add from 90+ pre-configured DSH tools
+- **Search & filter** — Find tools by name or category
+- **One-click customization** — Click "Add", then customize emoji or upload images
 - **Per-tool enable/disable** — Mix emoji with default icons
 - **Custom emoji or images** — Upload PNG/JPEG/GIF/WebP/BMP (max 1MB, stored in localStorage)
-- **Categorized settings** — Tools grouped by function (File operations, Shell, Web & search, etc.)
+- **Categorized UI** — Tools grouped by function (File operations, Shell, Web & search, etc.)
 - **Zero-config defaults** — Popular tools work out of the box
 
-## Default Mappings (30+ tools)
+## Default Mappings (90+ tools)
 
-| Category | Tools | Emoji |
+The plugin includes emoji mappings for 90+ tools across these categories:
+
+| Category | Examples | Sample Emoji |
 |---|---|---|
 | **Reasoning** | `think` | 🤔 |
-| **File operations** | `read`, `grep`, `glob` | 🧐, 🔍, 📁 |
-| | `read_image` | 🖼️ |
-| | `edit`, `write`, `str_replace_editor` | ✏️, ✍️, 📝 |
+| **File operations** | `read`, `write`, `edit`, `grep`, `glob`, `read_image` | 🧐, ✍️, ✏️, 🔍, 📁, 🖼️ |
 | **Shell** | `bash`, `pwsh` | 💻, 👨‍💻 |
-| **Web & search** | `web_fetch`, `web_search`, `platform_search` | 🧐, 🔍, 🔎 |
-| | `video_search`, `domain_search`, `weather` | 🎬, 🏢, 🌤️ |
-| **Delegation** | `subagent`, `subagent_fork`, `workflow` | 🤖, 🔀, ⚙️ |
+| **Web & search** | `web_fetch`, `web_search`, `research`, `weather` | 🌐, 🔍, 📚, 🌤️ |
+| **Delegation** | `subagent`, `workflow`, `spawn_teammate` | 🤖, ⚙️, 👥 |
 | **Job control** | `job_list`, `job_output`, `job_kill` | 📋, 📤, ❌ |
-| **Output** | `present` | 🎁 |
-| **System** | `skill`, `working_directory` | 📚, 📂 |
-| **User interaction** | `ask_user_question` | ❓ |
+| **Memory** | `mnemon_recall`, `mnemon_remember`, `mnemon_document_search` | 🧠, 💭, 📄 |
+| **Goals & tasks** | `create_goal`, `task_board_create`, `todo_write` | 🎯, 📋, 📝 |
+| **Scheduling** | `schedule_create`, `schedule_list` | ⏰, 📅 |
+| **Office** | `office_docx`, `office_xlsx`, `office_pptx` | 📄, 📊, 📊 |
+| **Other** | `plugin_manager`, `list_subagent_models` | 🔌, 🏷️ |
 | **Error state** | Any tool in error | 😫 |
+
+See the complete list in the settings UI.
 
 ## Screenshots
 
@@ -77,20 +80,22 @@ In the DSH Settings page, open **Tool emoji** to customize every icon:
 
 ### Master controls
 - **Enable / disable the entire plugin** with the master switch
-- View **statistics** — how many tools configured and enabled
+- View **statistics** — configured, enabled, and available tool counts
 
-### Per-tool configuration
-- Each tool has its own card with:
+### Configured tools
+- Each added tool has its own card with:
   - **Enable/disable toggle** — Mix emoji with default icons
   - **Custom emoji input** — Type any emoji or text
-  - **Image upload** — Use a local image as the icon (PNG/JPEG/GIF/WebP/BMP, max 1MB, stored in localStorage)
+  - **Image upload** — Use a local image as the icon (PNG/JPEG/GIF/WebP/BMP, max 1MB)
   - **Remove image** button to fall back to emoji
-  - **Delete tool** button to remove custom entries
+  - **Delete** button to remove from configuration
 
-### Add new tools
-- **"Add new tool" section** — Type any tool name to create a custom mapping
-- Tool names must match the `data-tool` or `data-variant` attribute in the DOM
-- Unknown tools automatically get a default emoji (🔧)
+### Add tools
+- **Visual tool picker** — Browse 90+ pre-configured DSH tools
+- **Search/filter** — Find tools by name or category
+- **Grid layout** — Each tool shows its emoji, name, and "Add" button
+- **One-click add** — Tools auto-hide after adding (no duplicates)
+- **Expand/collapse** — "Show all" reveals the complete list
 
 ### Error state
 - Configure the emoji shown for **all tools in error state**
@@ -113,14 +118,13 @@ To make the emoji apply to those custom rows too:
 
 If `dsh-edit-guardian` does not have the `data-tool` attributes, the emoji will not be applied to its custom rows.
 
-## Adding tools manually
+## Adding custom tools
 
-While the settings UI lets you add any tool by name, you can also edit the CSS selectors directly in `lib/client.js` if you need more control.
+The visual picker includes 90+ known DSH tools. If you need a tool that's not in the list:
 
-The plugin uses these selectors:
-- `[data-tool="<name>"]` for most tools
-- `[data-variant="<name>"]` for some tools (like `think`, `read`, `search`)
-- `.dshg_row[data-tool="<name>"]` for dsh-edit-guardian compatibility
+1. The plugin will still work if that tool uses standard `data-tool` or `data-variant` attributes
+2. Unknown tools get a default emoji (🔧)
+3. You can manually edit `ALL_KNOWN_TOOLS` in `lib/client.js` to add more tools
 
 ## Notes
 
@@ -134,19 +138,19 @@ The plugin uses these selectors:
 
 This version (v2) uses a new storage key (`dsh-tool-emoji:config:v2`) and structure:
 
-- **Old installs**: Your v1 settings won't migrate automatically. Use "Add new tool" to recreate custom entries.
-- **Default behavior**: All tools in `DEFAULT_EMOJI_MAP` are now auto-enabled. Disable individual tools if needed.
-- **Custom tools**: You can now add any tool without editing code.
+- **Old installs**: Your v1 settings won't migrate automatically. Use the visual tool picker to re-add tools.
+- **Default behavior**: Tools must be explicitly added via the picker (no auto-enable).
+- **90+ tools available**: Much larger pre-configured tool list.
 
 ## Changes from upstream
 
 This fork includes:
 
-1. **Universal tool support** — Works with any tool, not just a predefined list
-2. **30+ default emoji mappings** covering common DSH tools
-3. **Add/delete tools in settings UI** — No code editing required
-4. **Categorized settings** — Tools grouped by function
-5. **Better UX** — Statistics, better layout, clearer labels
+1. **Visual tool picker** — Browse and add from 90+ pre-configured tools
+2. **Search & filter** — Find tools by name or category in the picker UI
+3. **Categorized display** — Tools grouped by function
+4. **Better UX** — Statistics, grid layout, expand/collapse
+5. **90+ default emoji mappings** covering most DSH tools
 6. **Relaxed `peerDependencies`** to support DSH `^0.2.0`:
    - `@deepseek-ai/cordis`: `^4.0.1 || ^5.0.0`
    - `@deepseek-ai/dsh-client-runtime`: `^0.1.1-rc.2 || ^0.2.0`
