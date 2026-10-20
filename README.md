@@ -153,20 +153,38 @@ This version (v2) uses a new storage key (`dsh-tool-emoji:config:v2`) and struct
 
 **Forked from**: [LWLAymh/dsh-tool-emoji](https://github.com/LWLAymh/dsh-tool-emoji)
 
-This fork includes:
+**Why this fork?** The original repo is unmaintained and missing several DSH tools. This fork keeps the plugin alive and extends it to cover the full DSH ecosystem.
 
-1. **Visual tool picker** — Browse and add from 90+ pre-configured tools
-2. **Search & filter** — Find tools by name or category in the picker UI
-3. **Categorized display** — Tools grouped by function
-4. **Better UX** — Statistics, grid layout, expand/collapse
-5. **90+ default emoji mappings** covering most DSH tools
-6. **Desktop platform support** — Works in DSH Desktop app (not just Web)
-7. **Relaxed `peerDependencies`** to support DSH `^0.2.0`:
-   - `@deepseek-ai/cordis`: `^4.0.1 || ^5.0.0`
-   - `@deepseek-ai/dsh-client-runtime`: `^0.1.1-rc.2 || ^0.2.0`
-   - `react`: `^18.2.0 || ^19.0.0`
+This fork adds:
 
-Tested on DSH `0.2.1-rc.2`.
+1. **Missing tool coverage**
+   - Added emoji for `read_image`, `sidebar_open`, `cordis_*`, and 30+ other tools that the upstream never covered
+   - Comprehensive `view-*` sub-tool mapping for `mnemon_view_action` and `mnemon_view_route`
+
+2. **Desktop platform support**
+   - Upstream only worked in Web GUI
+   - Now works in **both Web and Desktop** apps
+   - Installation verified on DSH Desktop `0.2.1-rc.2`
+
+3. **Complete tool picker** (90+ tools)
+   - Visual tool browser with category grouping
+   - Search and filter by tool name
+   - One-click enable instead of manual `data-tool` entry
+
+4. **Modern DSH compatibility**
+   - Relaxed `peerDependencies` to support DSH `^0.2.0`:
+     - `@deepseek-ai/cordis`: `^4.0.1 || ^5.0.0`
+     - `@deepseek-ai/dsh-client-runtime`: `^0.1.1-rc.2 || ^0.2.0`
+     - `react`: `^18.2.0 || ^19.0.0`
+   - Tested on DSH `0.2.1-rc.2`
+
+5. **Better UX**
+   - Statistics dashboard (configured/enabled/available counts)
+   - Grid layout with expand/collapse
+   - Per-tool enable/disable toggles
+   - Auto-save on every change
+
+**License note**: This fork keeps MIT, matching the upstream's MIT license. The copyright attribution is preserved in `LICENSE`.
 
 ## License
 

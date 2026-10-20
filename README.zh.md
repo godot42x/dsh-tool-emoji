@@ -148,20 +148,38 @@ dsh plugin --profile web remove dsh-tool-emoji
 
 **Fork 自**：[LWLAymh/dsh-tool-emoji](https://github.com/LWLAymh/dsh-tool-emoji)
 
-本 fork 包含以下改动：
+**为什么要 fork？** 原始仓库已停止维护，并且缺失多个 DSH 工具支持。本 fork 保持插件活跃，扩展至完整 DSH 生态。
 
-1. **可视化工具选择器** — 浏览并添加 90+ 预配置工具
-2. **搜索与过滤** — 在选择器界面按名称或分类查找工具
-3. **分类显示** — 工具按功能分组
-4. **更好的用户体验** — 统计信息、网格布局、展开/折叠
-5. **90+ 默认 emoji 映射**，覆盖大多数 DSH 工具
-6. **Desktop 平台支持** — 在 DSH 桌面应用中也能使用（不只 Web）
-7. **放宽 `peerDependencies`** 以支持 DSH `^0.2.0`：
-   - `@deepseek-ai/cordis`: `^4.0.1 || ^5.0.0`
-   - `@deepseek-ai/dsh-client-runtime`: `^0.1.1-rc.2 || ^0.2.0`
-   - `react`: `^18.2.0 || ^19.0.0`
+本 fork 新增：
 
-已在 DSH `0.2.1-rc.2` 上测试。
+1. **缺失工具覆盖**
+   - 新增 `read_image`、`sidebar_open`、`cordis_*` 及另外 30+ 个上游从未覆盖的工具的 emoji
+   - 完整的 `view-*` 子工具映射（用于 `mnemon_view_action` 和 `mnemon_view_route`）
+
+2. **Desktop 平台支持**
+   - 上游仅在 Web GUI 工作
+   - 现在同时支持 **Web 和 Desktop** 应用
+   - 已在 DSH Desktop `0.2.1-rc.2` 上验证安装
+
+3. **完整工具选择器**（90+ 工具）
+   - 可视化工具浏览器，按分类分组
+   - 按工具名搜索和过滤
+   - 一键启用，无需手动输入 `data-tool`
+
+4. **现代 DSH 兼容性**
+   - 放宽 `peerDependencies` 以支持 DSH `^0.2.0`：
+     - `@deepseek-ai/cordis`: `^4.0.1 || ^5.0.0`
+     - `@deepseek-ai/dsh-client-runtime`: `^0.1.1-rc.2 || ^0.2.0`
+     - `react`: `^18.2.0 || ^19.0.0`
+   - 已在 DSH `0.2.1-rc.2` 上测试
+
+5. **更好的用户体验**
+   - 统计面板（已配置/已启用/可用工具数量）
+   - 网格布局，支持展开/折叠
+   - 每个工具独立的启用/禁用开关
+   - 所有改动自动保存
+
+**许可证说明**：本 fork 保持 MIT 许可证，与上游的 MIT 许可证一致。版权归属保留在 `LICENSE` 中。
 
 ## License
 
