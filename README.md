@@ -2,7 +2,9 @@
 
 [中文](README.zh.md)
 
-A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web plugin that replaces tool icons with emoji, **supporting 90+ DSH tools with visual picker**.
+A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) plugin that replaces tool icons with emoji, **supporting 90+ DSH tools with visual picker**.
+
+**Platforms**: Web GUI + Desktop GUI
 
 ## ✨ Features
 
@@ -46,15 +48,20 @@ See the complete list in the settings UI.
 ```sh
 # from GitHub (this fork)
 dsh plugin --profile web add git+https://github.com/godot42x/dsh-tool-emoji.git
+# or for desktop
+dsh plugin --profile desktop add git+https://github.com/godot42x/dsh-tool-emoji.git
 
 # or from a local checkout
 dsh plugin --profile web add file:./dsh-tool-emoji
 ```
 
-Then restart the web profile:
+Then restart the profile:
 
 ```sh
+# for web
 dsh --profile web
+# or for desktop (restart the app)
+```
 ```
 
 The plugin does not hot-reload into an already-running Web process.
@@ -144,6 +151,8 @@ This version (v2) uses a new storage key (`dsh-tool-emoji:config:v2`) and struct
 
 ## Changes from upstream
 
+**Forked from**: [LWLAymh/dsh-tool-emoji](https://github.com/LWLAymh/dsh-tool-emoji)
+
 This fork includes:
 
 1. **Visual tool picker** — Browse and add from 90+ pre-configured tools
@@ -151,7 +160,8 @@ This fork includes:
 3. **Categorized display** — Tools grouped by function
 4. **Better UX** — Statistics, grid layout, expand/collapse
 5. **90+ default emoji mappings** covering most DSH tools
-6. **Relaxed `peerDependencies`** to support DSH `^0.2.0`:
+6. **Desktop platform support** — Works in DSH Desktop app (not just Web)
+7. **Relaxed `peerDependencies`** to support DSH `^0.2.0`:
    - `@deepseek-ai/cordis`: `^4.0.1 || ^5.0.0`
    - `@deepseek-ai/dsh-client-runtime`: `^0.1.1-rc.2 || ^0.2.0`
    - `react`: `^18.2.0 || ^19.0.0`

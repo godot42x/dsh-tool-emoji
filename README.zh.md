@@ -2,7 +2,9 @@
 
 [English](README.md)
 
-一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web 插件：用 emoji 替换工具图标，**支持 90+ DSH 工具的可视化选择器**。
+一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 插件：用 emoji 替换工具图标，**支持 90+ DSH 工具的可视化选择器**。
+
+**支持平台**：Web GUI + Desktop GUI
 
 ## ✨ 特性
 
@@ -45,10 +47,10 @@
 
 ```sh
 # 从 GitHub（本 fork）
-dsh plugin --profile web add git+https://github.com/godot42x/dsh-tool-emoji.git
+dsh plugin --profile web add  # 或 --profile desktop git+https://github.com/godot42x/dsh-tool-emoji.git
 
 # 或本地 checkout
-dsh plugin --profile web add file:./dsh-tool-emoji
+dsh plugin --profile web add  # 或 --profile desktop file:./dsh-tool-emoji
 ```
 
 然后重启 Web profile：
@@ -144,6 +146,8 @@ dsh plugin --profile web remove dsh-tool-emoji
 
 ## 与上游的差异
 
+**Fork 自**：[LWLAymh/dsh-tool-emoji](https://github.com/LWLAymh/dsh-tool-emoji)
+
 本 fork 包含以下改动：
 
 1. **可视化工具选择器** — 浏览并添加 90+ 预配置工具
@@ -151,7 +155,8 @@ dsh plugin --profile web remove dsh-tool-emoji
 3. **分类显示** — 工具按功能分组
 4. **更好的用户体验** — 统计信息、网格布局、展开/折叠
 5. **90+ 默认 emoji 映射**，覆盖大多数 DSH 工具
-6. **放宽 `peerDependencies`** 以支持 DSH `^0.2.0`：
+6. **Desktop 平台支持** — 在 DSH 桌面应用中也能使用（不只 Web）
+7. **放宽 `peerDependencies`** 以支持 DSH `^0.2.0`：
    - `@deepseek-ai/cordis`: `^4.0.1 || ^5.0.0`
    - `@deepseek-ai/dsh-client-runtime`: `^0.1.1-rc.2 || ^0.2.0`
    - `react`: `^18.2.0 || ^19.0.0`

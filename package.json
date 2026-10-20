@@ -1,16 +1,16 @@
 {
   "name": "dsh-tool-emoji",
-  "version": "0.2.4",
-  "description": "Replace DSH web tool icons with emoji: think 🤔, read/search 🧐, pwsh 👨‍💻, edit ☝️🤓, error 😫",
+  "version": "0.3.0",
+  "description": "Replace DSH tool icons with emoji (90+ tools): think 🤔, read 🧐, bash 💻, subagent 🤖, with visual picker",
   "type": "module",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LWLAymh/dsh-tool-emoji.git"
+    "url": "git+https://github.com/godot42x/dsh-tool-emoji.git"
   },
-  "homepage": "https://github.com/LWLAymh/dsh-tool-emoji",
+  "homepage": "https://github.com/godot42x/dsh-tool-emoji",
   "bugs": {
-    "url": "https://github.com/LWLAymh/dsh-tool-emoji/issues"
+    "url": "https://github.com/godot42x/dsh-tool-emoji/issues"
   },
   "exports": {
     ".": {
@@ -45,7 +45,7 @@
       "patch": "./cordis.patch.yml"
     },
     "client": {
-      "platform": "web",
+      "platform": ["web", "desktop"],
       "inject": [
         "@deepseek-ai/dsh-client-runtime"
       ]
