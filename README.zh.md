@@ -10,6 +10,7 @@
 |---|---|
 | `think`（推理行） | 🤔 |
 | `read` / `web_fetch` / `grep` / `glob` / `web_search` | 🧐 |
+| `read_image` | 🖼️ |
 | `pwsh` | 👨‍💻 |
 | `edit` / `write` / `str_replace_editor` | ☝️🤓 |
 | 以上任一卡片出错（error 状态） | 😫 |
@@ -93,10 +94,22 @@ dsh plugin --profile web remove dsh-tool-emoji
 
 - 选择器基于官方源码中的稳定 data attribute：
   - `data-tool="edit"` / `data-tool="str_replace_editor"` / `data-tool="pwsh"`
-  - `data-variant="think"` / `data-variant="search"` / `data-variant="read"`
+  - `data-variant="think"` / `data-variant="search"` / `data-variant="read"` / `data-variant="read_image"`
   - `[data-disclosure-row] > span:first-child`
 - 如果后续 DSH 更新改变了这些 DOM 结构，CSS 选择器可能需要同步调整。
 - 该插件是 Web profile 专用；TUI/headless 没有 leading icon UI surface。
+
+## 与上游的差异
+
+本 fork 包含以下改动：
+
+1. **新增 `read_image` 工具支持**，使用 🖼️ emoji
+2. **放宽 `peerDependencies` 版本要求**以支持 DSH `^0.2.0`：
+   - `@deepseek-ai/cordis`: `^4.0.1 || ^5.0.0`
+   - `@deepseek-ai/dsh-client-runtime`: `^0.1.1-rc.2 || ^0.2.0`
+   - `react`: `^18.2.0 || ^19.0.0`
+
+这些改动确保与较新版本的 DSH 兼容（已在 `0.2.1-rc.2` 上测试）。
 
 ## License
 

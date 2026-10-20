@@ -1,0 +1,36 @@
+From 9689002ee40e9bb94d83114fc311af92f612b220 Mon Sep 17 00:00:00 2001
+From: godot42x <disyourself@qq.com>
+Date: Wed, 21 Oct 2026 02:36:11 +0800
+Subject: [PATCH] =?UTF-8?q?Add=20read=5Fimage=20tool=20emoji=20support=20(?=
+ =?UTF-8?q?=F0=9F=96=BC=EF=B8=8F)?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ lib/client.js | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/lib/client.js b/lib/client.js
+index c60f671..3972d08 100644
+--- a/lib/client.js
++++ b/lib/client.js
+@@ -15,6 +15,7 @@ window.__ModuleLoader__.load({
+       tools: {
+         think: { enabled: true, emoji: "🤔", image: null },
+         read: { enabled: true, emoji: "🧐", image: null },
++        read_image: { enabled: true, emoji: "🖼️", image: null },
+         web_fetch: { enabled: true, emoji: "🧐", image: null },
+         search: { enabled: true, emoji: "🧐", image: null },
+         web_search: { enabled: true, emoji: "🧐", image: null },
+@@ -31,6 +32,7 @@ window.__ModuleLoader__.load({
+     var TOOL_LABELS = {
+       think: "Think",
+       read: "Read",
++      read_image: "Read image",
+       web_fetch: "Web fetch",
+       search: "Search",
+       web_search: "Web search",
+-- 
+2.50.1 (Apple Git-155)
+

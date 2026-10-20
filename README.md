@@ -10,6 +10,7 @@ A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) Web plugin
 |---|---|
 | `think` (reasoning row) | 🤔 |
 | `read` / `web_fetch` / `grep` / `glob` / `web_search` | 🧐 |
+| `read_image` | 🖼️ |
 | `pwsh` | 👨‍💻 |
 | `edit` / `write` / `str_replace_editor` | ☝️🤓 |
 | Any of the above cards in the error state | 😫 |
@@ -93,10 +94,22 @@ For example, to add `bash`:
 
 - The selectors rely on official source-level data attributes:
   - `data-tool="edit"` / `data-tool="str_replace_editor"` / `data-tool="pwsh"`
-  - `data-variant="think"` / `data-variant="search"` / `data-variant="read"`
+  - `data-variant="think"` / `data-variant="search"` / `data-variant="read"` / `data-variant="read_image"`
   - `[data-disclosure-row] > span:first-child`
 - If a future DSH version changes these DOM structures, the CSS selectors may need to be updated.
 - The plugin is Web-profile oriented; TUI/headless profiles have no leading-icon UI surface.
+
+## Changes from upstream
+
+This fork includes:
+
+1. **Added `read_image` tool support** with 🖼️ emoji
+2. **Relaxed `peerDependencies` version requirements** to support DSH `^0.2.0`:
+   - `@deepseek-ai/cordis`: `^4.0.1 || ^5.0.0`
+   - `@deepseek-ai/dsh-client-runtime`: `^0.1.1-rc.2 || ^0.2.0`
+   - `react`: `^18.2.0 || ^19.0.0`
+
+These changes ensure compatibility with newer DSH versions (tested with `0.2.1-rc.2`).
 
 ## License
 
