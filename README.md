@@ -45,11 +45,19 @@ See the complete list in the settings UI.
 
 ## Installation
 
+### Desktop App (GUI)
+
+1. Open **Settings → Web Plugins** (or **Plugins**)
+2. Click **+ Install from URL** (or equivalent add plugin button)
+3. Enter: `https://github.com/godot42x/dsh-tool-emoji`
+4. Click **Install**
+5. Restart the application
+
+### CLI (for Web profile or advanced users)
+
 ```sh
 # from GitHub (this fork)
 dsh plugin --profile web add git+https://github.com/godot42x/dsh-tool-emoji.git
-# or for desktop
-dsh plugin --profile desktop add git+https://github.com/godot42x/dsh-tool-emoji.git
 
 # or from a local checkout
 dsh plugin --profile web add file:./dsh-tool-emoji
@@ -58,19 +66,15 @@ dsh plugin --profile web add file:./dsh-tool-emoji
 Then restart the profile:
 
 ```sh
-# for web
 dsh --profile web
-# or for desktop (restart the app)
-```
 ```
 
-The plugin does not hot-reload into an already-running Web process.
+The plugin does not hot-reload into an already-running process — restart is required.
 
-Uninstall:
+### Uninstall
 
-```sh
-dsh plugin --profile web remove dsh-tool-emoji
-```
+- **Desktop**: Settings → Web Plugins → find `dsh-tool-emoji` → Remove
+- **CLI**: `dsh plugin --profile web remove dsh-tool-emoji`
 
 ## How it works
 

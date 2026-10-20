@@ -45,27 +45,36 @@
 
 ## 安装
 
+### 桌面应用（GUI）
+
+1. 打开 **设置 → Web 插件**（或 **插件**）
+2. 点击 **+ 从 URL 安装**（或类似的添加插件按钮）
+3. 输入：`https://github.com/godot42x/dsh-tool-emoji`
+4. 点击 **安装**
+5. 重启应用
+
+### 命令行（Web profile 或高级用户）
+
 ```sh
 # 从 GitHub（本 fork）
-dsh plugin --profile web add  # 或 --profile desktop git+https://github.com/godot42x/dsh-tool-emoji.git
+dsh plugin --profile web add git+https://github.com/godot42x/dsh-tool-emoji.git
 
 # 或本地 checkout
-dsh plugin --profile web add  # 或 --profile desktop file:./dsh-tool-emoji
+dsh plugin --profile web add file:./dsh-tool-emoji
 ```
 
-然后重启 Web profile：
+然后重启 profile：
 
 ```sh
 dsh --profile web
 ```
 
-插件不会热更新到已运行的 Web 进程。
+插件不会热更新到已运行的进程 — 需要重启。
 
-卸载：
+### 卸载
 
-```sh
-dsh plugin --profile web remove dsh-tool-emoji
-```
+- **桌面应用**：设置 → Web 插件 → 找到 `dsh-tool-emoji` → 移除
+- **命令行**：`dsh plugin --profile web remove dsh-tool-emoji`
 
 ## 实现原理
 
