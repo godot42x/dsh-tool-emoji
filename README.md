@@ -2,15 +2,15 @@
 
 [中文](README.zh.md)
 
-A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) plugin that replaces tool icons with emoji, **supporting 90+ DSH tools with visual picker**.
+A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) plugin that replaces tool-card and parent/subagent message icons with emoji.
 
-**Platforms**: Web GUI + Desktop GUI
+**Platforms**: Web GUI (desktop also loads the web client; `dsh.client.platform` must be the string `"web"`)
 
 ## ✨ Features
 
-- **Visual tool picker** — Browse and add from 90+ pre-configured DSH tools
+- **On by default** — 90+ known tool cards, `send_message`, and agent-message rows
 - **Search & filter** — Find tools by name or category
-- **One-click customization** — Click "Add", then customize emoji or upload images
+- **Grouped settings** — Delegation and Messages expanded; no Add step
 - **Per-tool enable/disable** — Mix emoji with default icons
 - **Custom emoji or images** — Upload PNG/JPEG/GIF/WebP/BMP (max 1MB, stored in localStorage)
 - **Categorized UI** — Tools grouped by function (File operations, Shell, Web & search, etc.)
@@ -26,7 +26,8 @@ The plugin includes emoji mappings for 90+ tools across these categories:
 | **File operations** | `read`, `write`, `edit`, `grep`, `glob`, `read_image` | 🧐, ✍️, ✏️, 🔍, 📁, 🖼️ |
 | **Shell** | `bash`, `pwsh` | 💻, 👨‍💻 |
 | **Web & search** | `web_fetch`, `web_search`, `research`, `weather` | 🌐, 🔍, 📚, 🌤️ |
-| **Delegation** | `subagent`, `workflow`, `spawn_teammate` | 🤖, ⚙️, 👥 |
+| **Delegation** | `subagent`, `send_message`, `spawn_teammate` | 🤖, 💬, 👥 |
+| **Messages** | agent-message row, continuation receipt | 💬, ▶️ |
 | **Job control** | `job_list`, `job_output`, `job_kill` | 📋, 📤, ❌ |
 | **Memory** | `mnemon_recall`, `mnemon_remember`, `mnemon_document_search` | 🧠, 💭, 📄 |
 | **Goals & tasks** | `create_goal`, `task_board_create`, `todo_write` | 🎯, 📋, 📝 |
@@ -79,41 +80,33 @@ The plugin does not hot-reload into an already-running process — restart is re
 ## How it works
 
 - This plugin does **not** register `tool.call.toolview`, so it does not take over the original tool cards.
-- It only injects a small global stylesheet that:
-  - hides the built-in leading SVG icon;
-  - renders an emoji or image in the same leading cell with `::before`;
+- It only injects a small global stylesheet (about 70 rules / 13 KB) that:
+  - finds the leading cell (`[data-variant="<tool>"] > span[class*="leading"]`, plus the disclosure-row and `data-tool` layouts);
+  - maps every tool to a custom property (`--dte-icon-<tool>`, read from `:root`) and draws the icon with one generic `::before`;
+  - hides only the leading cell's first child (the built-in icon) and keeps the hover chevron;
   - preserves the title, summary, diff, terminal output, expand/collapse behavior, and all other card details.
+- Editing an emoji writes that custom property on `document.documentElement`; the stylesheet is never rebuilt while typing (input is coalesced at 150 ms). Images stay base64 in localStorage but CSS only references a short `blob:` URL.
 - When a tool card is in the error state, the leading error dot is replaced with the error emoji (default 😫).
+- In DSH 0.2.2, parent↔subagent traffic shows up as delegation tool cards (`send_message`, `subagent`, `spawn_teammate`, `wait_agent`…), so those are the rows that get emoji. The `[data-turn-trigger]` / `[data-generation-continuation]` selectors are kept for builds that render dedicated message rows.
 
 ## Settings / Customization
 
-In the DSH Settings page, open **Tool emoji** to customize every icon:
+In the DSH Settings page, open **工具 emoji** to customize every icon:
 
 ### Master controls
-- **Enable / disable the entire plugin** with the master switch
-- View **statistics** — configured, enabled, and available tool counts
+- Toggle the whole plugin
+- Stats show enabled / total rows
 
-### Configured tools
-- Each added tool has its own card with:
-  - **Enable/disable toggle** — Mix emoji with default icons
-  - **Custom emoji input** — Type any emoji or text
-  - **Image upload** — Use a local image as the icon (PNG/JPEG/GIF/WebP/BMP, max 1MB)
-  - **Remove image** button to fall back to emoji
-  - **Delete** button to remove from configuration
-
-### Add tools
-- **Visual tool picker** — Browse 90+ pre-configured DSH tools
-- **Search/filter** — Find tools by name or category
-- **Grid layout** — Each tool shows its emoji, name, and "Add" button
-- **One-click add** — Tools auto-hide after adding (no duplicates)
-- **Expand/collapse** — "Show all" reveals the complete list
+### Grouped list
+- Delegation and Messages start expanded
+- Each row: toggle, preview, name, emoji, optional image
+- Disable a row to restore its built-in SVG; no Add step
 
 ### Error state
-- Configure the emoji shown for **all tools in error state**
-- Works independently of individual tool settings
+- Emoji for tool cards in error (message rows have no error state)
 
-### Reset options
-- **Reset all to defaults** — Clear all customizations
+### Reset
+- Restore defaults
 
 All changes **save automatically** to localStorage and **apply immediately** without page refresh.
 
@@ -131,7 +124,7 @@ If `dsh-edit-guardian` does not have the `data-tool` attributes, the emoji will 
 
 ## Adding custom tools
 
-The visual picker includes 90+ known DSH tools. If you need a tool that's not in the list:
+Settings lists 90+ known DSH tools plus agent-message rows. If you need a tool that's not in the list:
 
 1. The plugin will still work if that tool uses standard `data-tool` or `data-variant` attributes
 2. Unknown tools get a default emoji (🔧)

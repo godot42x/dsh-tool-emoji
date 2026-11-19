@@ -1,7 +1,7 @@
 {
   "name": "dsh-tool-emoji",
-  "version": "0.3.0",
-  "description": "Replace DSH tool icons with emoji (90+ tools): think 🤔, read 🧐, bash 💻, subagent 🤖, with visual picker",
+  "version": "0.3.3",
+  "description": "Replace DSH tool-card and agent-message icons with emoji, with a grouped settings picker",
   "type": "module",
   "main": "lib/index.js",
   "repository": {
@@ -40,12 +40,15 @@
     "icon"
   ],
   "license": "MIT",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  },
   "dsh": {
     "bundle": {
       "patch": "./cordis.patch.yml"
     },
     "client": {
-      "platform": ["web", "desktop"],
+      "platform": "web",
       "inject": [
         "@deepseek-ai/dsh-client-runtime"
       ]

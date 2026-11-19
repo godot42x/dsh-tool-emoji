@@ -2,19 +2,17 @@
 
 [English](README.md)
 
-一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 插件：用 emoji 替换工具图标，**支持 90+ DSH 工具的可视化选择器**。
+一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) 插件：用 emoji 替换工具卡和父子 agent 消息行的图标。
 
-**支持平台**：Web GUI + Desktop GUI
+**支持平台**：Web GUI（桌面应用也走 web client，`dsh.client.platform` 必须是字符串 `"web"`）
 
 ## ✨ 特性
 
-- **可视化工具选择器** — 浏览并添加 90+ 预配置 DSH 工具
-- **搜索与过滤** — 按名称或分类查找工具
-- **一键自定义** — 点击"添加"，然后自定义 emoji 或上传图片
-- **单独启用/禁用** — 可混用 emoji 与默认图标
+- **默认全开** — 90+ 已知工具卡、`send_message`、智能体消息行都替换成 emoji
+- **分组设置** — 委托 / 会话消息默认展开，其余按组折叠
+- **搜索** — 按工具名或中文标签过滤
+- **单独开关** — 关掉某一项即回退该行内置 SVG
 - **自定义 emoji 或图片** — 上传 PNG/JPEG/GIF/WebP/BMP（最大 1MB，存在 localStorage）
-- **分类界面** — 工具按功能分组（文件操作、Shell、网络搜索等）
-- **开箱即用** — 常用工具默认配置好
 
 ## 默认映射（90+ 工具）
 
@@ -26,7 +24,8 @@
 | **文件操作** | `read`, `write`, `edit`, `grep`, `glob`, `read_image` | 🧐, ✍️, ✏️, 🔍, 📁, 🖼️ |
 | **Shell** | `bash`, `pwsh` | 💻, 👨‍💻 |
 | **网络搜索** | `web_fetch`, `web_search`, `research`, `weather` | 🌐, 🔍, 📚, 🌤️ |
-| **委托** | `subagent`, `workflow`, `spawn_teammate` | 🤖, ⚙️, 👥 |
+| **委托** | `subagent`, `send_message`, `spawn_teammate` | 🤖, 💬, 👥 |
+| **会话消息** | 智能体消息、续写回执 | 💬, ▶️ |
 | **任务控制** | `job_list`, `job_output`, `job_kill` | 📋, 📤, ❌ |
 | **记忆** | `mnemon_recall`, `mnemon_remember`, `mnemon_document_search` | 🧠, 💭, 📄 |
 | **目标与任务** | `create_goal`, `task_board_create`, `todo_write` | 🎯, 📋, 📝 |
@@ -79,41 +78,33 @@ dsh --profile web
 ## 实现原理
 
 - 本插件**不注册** `tool.call.toolview`，因此不会接管原始工具卡片。
-- 只注入一层全局 CSS：
-  - 隐藏内置 SVG 图标；
-  - 在同一个 leading cell 上用 `::before` 显示 emoji 或图片；
+- 只注入一层全局 CSS（约 70 条规则 / 13 KB）：
+  - 定位 leading cell（`[data-variant="<tool>"] > span[class*="leading"]`，并兼容 disclosure-row 与 `data-tool` 结构）；
+  - 每个工具只映射一个自定义属性（`--dte-icon-<tool>`，从 `:root` 读取），由一个通用 `::before` 负责显示；
+  - 只隐藏 leading cell 的首个子节点（内置图标），保留 hover 时的 chevron；
   - 工具卡片的标题、摘要、diff、终端输出、折叠/展开等原有行为全部保留。
+- 修改 emoji 时只写 `document.documentElement` 上的自定义属性，不再重建样式表（输入按 150 ms 合并）；图片仍在 localStorage 里存 base64，但 CSS 只引用 `blob:` 短地址。
 - 错误状态仍会保留原卡片，只把 leading 的红色错误点换成错误 emoji（默认 😫）。
+- 在 DSH 0.2.2 里，父子 agent 的消息就是委托工具卡（`send_message`、`subagent`、`spawn_teammate`、`wait_agent`…），所以替换的是这些卡；`[data-turn-trigger]` / `[data-generation-continuation]` 选择器留给会渲染独立消息行的版本。
 
 ## 设置 / 自定义
 
-在 DSH 设置页打开 **Tool emoji**，可自定义每个图标：
+在 DSH 设置页打开 **工具 emoji**，可自定义每个图标：
 
 ### 总控制
 - **总开关** 可一键启用/禁用整个插件
-- **统计信息** — 显示已配置、已启用和可用的工具数量
+- **统计** — `已启用 · 已开项/总项`
 
-### 已配置工具
-- 每个已添加的工具都有独立卡片，包含：
-  - **启用/禁用开关** — 可混用 emoji 与默认图标
-  - **自定义 emoji 输入框** — 填写任意 emoji 或文字
-  - **图片上传** — 使用本地图片作为图标（PNG/JPEG/GIF/WebP/BMP，最大 1MB）
-  - **移除图片** 按钮，回退到 emoji
-  - **删除** 按钮，从配置中移除
-
-### 添加工具
-- **可视化工具选择器** — 浏览 90+ 预配置 DSH 工具
-- **搜索/过滤** — 按名称或分类查找工具
-- **网格布局** — 每个工具显示 emoji、名称和"添加"按钮
-- **一键添加** — 添加后工具自动隐藏（避免重复）
-- **展开/折叠** — "显示全部"展开完整列表
+### 分组列表
+- 默认展开 **委托 / Agent** 和 **会话消息**
+- 每一行：开关、预览、名称、emoji 输入、可选图片
+- 关掉某一项即回退该行内置 SVG，不用先「添加」
 
 ### 错误状态
-- 配置**所有工具出错时**显示的 emoji
-- 独立于单个工具设置
+- 配置**工具卡出错时**显示的 emoji（消息行不走 error 态）
 
-### 重置选项
-- **全部恢复默认** — 清除所有自定义配置
+### 重置
+- **恢复默认** — 清除所有自定义配置
 
 所有改动**自动保存**到 localStorage，并**即时生效**，无需刷新页面。
 
@@ -131,7 +122,7 @@ dsh --profile web
 
 ## 添加自定义工具
 
-可视化选择器包含 90+ 已知 DSH 工具。如果需要列表中没有的工具：
+设置页列出 90+ 已知 DSH 工具（含智能体消息行）。如果需要列表中没有的工具：
 
 1. 只要该工具使用标准 `data-tool` 或 `data-variant` 属性，插件仍可工作
 2. 未知工具会获得默认 emoji（🔧）
